@@ -11,11 +11,58 @@
     <div id="displayData">
 
     </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <div id="map" style="height: 900px; width: 100%;"></div>
+        <script>
+          function initMap() {
+            const url= "http://localhost:3000/flutrack?s=feverANDcoughORfever"
+            var results=[]
+              $.getJSON(url, function(data){
+                results = data.map(function(d){
+                  return [d.latitude, d.longitude]
+                })
+
+                var locations=results
+                console.log(locations)
+                var uluru = {lat: -25.363, lng: 131.044};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 4,
+                  center: uluru
+                });
+
+                var marker, i;
+
+                for (i = 0; i < locations.length; i++) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+                        map: map
+                    });
+                }
+              })
+            // var locations=results
+            // console.log(locations)
+            // var uluru = {lat: -25.363, lng: 131.044};
+            // var map = new google.maps.Map(document.getElementById('map'), {
+            //   zoom: 4,
+            //   center: uluru
+            // });
+            //
+            // var marker, i;
+            //
+            // for (i = 0; i < locations.length; i++) {
+            //     marker = new google.maps.Marker({
+            //         position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+            //         map: map
+            //     });
+            // }
+          }
+        </script>
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZUdN9Rs9Gn-jrJssTagyTJf4O50ygK2Q&callback=initMap">
+        </script>
 
 
-    <script type="text/javascript">
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="index.js"></script>
+
+      <script src="index.js"></script>
   </body>
 </html>
