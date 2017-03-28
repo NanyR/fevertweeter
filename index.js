@@ -2,7 +2,7 @@
 
 
   function getAPI(){
-    const url= "http://api.flutrack.org/?s=feverANDcoughORfever"
+    const url= "http://localhost:3000/flutrack?s=feverANDcoughORfever"
     $.getJSON(url, function(data){
       console.log(data)
     })
