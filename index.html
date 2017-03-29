@@ -10,7 +10,8 @@
   </head>
   <body>
 
-    <a href="#" onclick="initMap()">Get API</a>
+    <a href="#" onclick="twitterMarkers()">Twitter Markers</a>
+    <a href="#" onclick="heatMap()">Flu map</a>
     <div id="displayData">
 
     </div>
@@ -21,59 +22,69 @@
 
           var heatmap, map
 
-          function initMap() {
+          function heatMap(){
             const url= "http://localhost:3000/flutrack"
             var locations=[]
-              $.getJSON(url, function(data){
-                locations = data.map(function(d){
-                  return [d.latitude, d.longitude, d.tweet_text]
+
+            $.getJSON(url).then(function(data){
+              locations= data.map((d)=>{
+                return [d.latitude, d.longitude, d.tweet_text]
                 })
-  
-                map = new google.maps.Map(document.getElementById('map'), {
-                  zoom: 7,
-                  center: uluru,
-                  mapTypeId: 'satellite'
-                });
-
-                heatmap = new google.maps.visualization.HeatmapLayer({
-                  data: getPoints(locations),
-                  radius: 35,
-                  map: map
-                });
-                var infowindow = new google.maps.InfoWindow({});
-                var i;
-
-                // for (i = 0; i < locations.length; i++)
-                locations.forEach(function(location) {
-                    let marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(location[0], location[1]),
-                        //icon: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png",
-                        opacity: 0,
-                        title: location[2],
-                        map: map
-                    });
-                    console.log(location[2])
-                    google.maps.event.addListener(marker,'mouseover', function() {
-                        infowindow.setContent(marker["title"])
-                        infowindow.open(map, this);
-                    });
-
-                    // assuming you also want to hide the infowindow when user mouses-out
-                    google.maps.event.addListener(marker,'mouseout', function() {
-                        infowindow.close();
-                    });
-                })
-
-
-
-              })
+              return locations
+            }).then(function(locations){
+              heatmap = new google.maps.visualization.HeatmapLayer({
+                data: getPoints(locations),
+                radius: 35,
+                map: map
+              });
+            })
           }
 
+          function twitterMarkers(){
+            const url= "http://localhost:3000/twitter" + "?s=fever" + "&long=" + uluru["lng"] + "&lat=" + uluru["lat"] + "&radius=5"
+            var locations=[]
+            $.getJSON(url).then(function(data){
+              mappable=data.filter((d)=>{
+                return d.coordinates
+              })
 
+              locations = mappable.map(function(d){
+                return [d.coordinates.coordinates[1], d.coordinates.coordinates[0], d.text]
+              })
 
-          // function changeRadius() {
-          //   heatmap.set('radius', heatmap.get('radius') ? null : 35);
-          // }
+              return locations
+            }).then(function(locations){
+              // set markers
+              var infowindow = new google.maps.InfoWindow({});
+              var i;
+              locations.forEach(function(location) {
+                  let marker = new google.maps.Marker({
+                      position: new google.maps.LatLng(location[0], location[1]),
+                      //icon: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png",
+                      title: location[2],
+                      map: map
+                  });
+                  google.maps.event.addListener(marker,'mouseover', function() {
+                      infowindow.setContent(marker["title"])
+                      infowindow.open(map, this);
+                  });
+
+                  google.maps.event.addListener(marker,'mouseout', function() {
+                      infowindow.close();
+                  });
+              })
+              // end set marker
+            })
+
+          }
+
+          function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 13,
+              center: uluru,
+              mapTypeId: 'satellite'
+            })
+          }
 
           function getCenterLocation(callback){
             if(navigator.geolocation){
