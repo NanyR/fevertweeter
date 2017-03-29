@@ -2,7 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src= "node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="index.js"></script>
     <title>Fever Tweeter</title>
   </head>
   <body>
@@ -11,7 +14,6 @@
     <div id="displayData">
 
     </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <div id="map" style="height: 900px; width: 100%;"></div>
         <script>
 
@@ -26,8 +28,7 @@
                 locations = data.map(function(d){
                   return [d.latitude, d.longitude, d.tweet_text]
                 })
-                // var uluru =getCenterLocation() ;
-                console.log(uluru);
+  
                 map = new google.maps.Map(document.getElementById('map'), {
                   zoom: 7,
                   center: uluru,
@@ -47,6 +48,7 @@
                     let marker = new google.maps.Marker({
                         position: new google.maps.LatLng(location[0], location[1]),
                         //icon: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png",
+                        opacity: 0,
                         title: location[2],
                         map: map
                     });
