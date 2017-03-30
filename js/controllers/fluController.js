@@ -1,26 +1,27 @@
 class FluController{
 
   constructor(fluData, $map){
-    this.$map=$map
-    this.fluData=fluData
+    this.$map = $map
+    this.locations = this.getLocations(fluData)
+    this.points = this.getPoints(this.locations)
+    this.render()
   }
 
-}
-
-function heatMap(){
-  const url= "http://localhost:3000/flutrack"
-  var locations=[]
-
-  $.getJSON(url).then(function(data){
-    locations= data.map((d)=>{
+  getLocations(data) {
+    let locations = data.map((d)=>{
       return [d.latitude, d.longitude, d.tweet_text]
       })
     return locations
-  }).then(function(locations){
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: getPoints(locations),
-      radius: 35,
-      map: map
-    });
-  })
+  }
+
+  getPoints(coords){
+    var coordinates = coords.map((loc)=>{
+      return new google.maps.LatLng(loc[0], loc[1])
+    })
+    return coordinates
+  }
+
+  render() {
+    FluView.renderMap(this.$map, this.locations, this.points)
+  }
 }

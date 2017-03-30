@@ -1,27 +1,31 @@
 $(()=>{
   //get api
 
-  FluTracker.all.then((fluData)=>{
-    let $map=$('#map')
-    let fluController= new FluController(fluData, $map)
+// initiate map
+  //const map = initMap();
+  let mapPromise = initMap()
+  let fluPromise = FluTracker.all()
+  Promise.all([mapPromise, fluPromise])
+  .then(([map, fluData]) => {
+    let $map = map
+    let fluController = new FluController(fluData, $map)
   })
+
 })
 
 
-function heatMap(){
-  const url= "http://localhost:3000/flutrack"
-  var locations=[]
-
-  $.getJSON(url).then(function(data){
-    locations= data.map((d)=>{
-      return [d.latitude, d.longitude, d.tweet_text]
-      })
-    return locations
-  }).then(function(locations){
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: getPoints(locations),
-      radius: 35,
-      map: map
-    });
-  })
-}
+  function initMap(){
+    return new Promise(function(resolve, reject) {
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(position){
+          let uluru = {lat:position.coords.latitude , lng:position.coords.longitude}
+          let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: uluru,
+            mapTypeId: 'satellite'
+          })
+          resolve(map)
+        })
+      }
+    })
+  }
