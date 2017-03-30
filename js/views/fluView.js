@@ -30,8 +30,15 @@ class FluView {
   }
 
   static tweetTemplate(tweets){
-    let showtweets=tweets.map((tweet)=>{
-      return `<div id='single-tweet'><h3>${tweet[3]}</h3><p>${tweet[2]}</p></div>`
+    let sortTweets= tweets.sort((a,b)=>{
+      return a[4]-b[4]
+    })
+
+    let showtweets=sortTweets.map((tweet)=>{
+      return `<div id='single-tweet'>
+        <h3>${tweet[3]}</h3>
+        <p>${tweet[4]} miles away</p>
+        <p>${tweet[2]}</p></div>`
     })
     return showtweets.join('')
   }

@@ -1,35 +1,33 @@
 $(()=>{
-  let mapPromise = initMap()
+  let currentLocationPromise=getLocation()
+  let mapPromise = currentLocationPromise.then((currentLocation)=>{
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: currentLocation,
+      mapTypeId: 'satellite'
+    })
+    return map
+  })
   let fluPromise = FluTracker.all()
-  Promise.all([mapPromise, fluPromise])
-  .then(([map, fluData]) => {
+  Promise.all([mapPromise, fluPromise, currentLocationPromise])
+  .then(([map, fluData, currentLocation]) => {
     let $tweets = $('#tweets')
     let $map = map
-    let fluController = new FluController(fluData, $map, $tweets)
+    let fluController = new FluController(fluData, $map, $tweets, currentLocation)
   })
 
 })
 
 
-  function initMap(){
+  function getLocation(){
     return new Promise(function(resolve, reject) {
       if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position){
           let uluru = {lat:position.coords.latitude , lng:position.coords.longitude}
-          let map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 13,
-            center: uluru,
-            mapTypeId: 'satellite'
-          })
-          resolve(map)
+          resolve(uluru)
         }, function(decline){
           let uluru = {lat:40.705123, lng:-74.014081}
-          let map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 13,
-            center: uluru,
-            mapTypeId: 'satellite'
-          })
-          resolve(map)
+          resolve(uluru)
         })
       }
     })
