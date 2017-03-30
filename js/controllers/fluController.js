@@ -1,7 +1,8 @@
 class FluController{
 
-  constructor(fluData, $map){
+  constructor(fluData, $map, $tweets){
     this.$map = $map
+    this.$tweets=$tweets
     this.locations = this.getLocations(fluData)
     this.points = this.getPoints(this.locations)
     this.render()
@@ -9,7 +10,7 @@ class FluController{
 
   getLocations(data) {
     let locations = data.map((d)=>{
-      return [d.latitude, d.longitude, d.tweet_text]
+      return [d.latitude, d.longitude, d.tweet_text, d.user_name]
       })
     return locations
   }
@@ -22,6 +23,6 @@ class FluController{
   }
 
   render() {
-    FluView.renderMap(this.$map, this.locations, this.points)
+    FluView.renderMap(this.$map, this.locations, this.points, this.$tweets)
   }
 }
