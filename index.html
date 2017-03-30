@@ -5,18 +5,19 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src= "node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="index.js"></script>
     <title>Fever Tweeter</title>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZUdN9Rs9Gn-jrJssTagyTJf4O50ygK2Q&libraries=visualization">
+    </script>
+    <script src="/js/models/flutracker.js"></script>
+    <script src="/js/controllers/fluController.js"></script>
+    <script src="/js/views/fluView.js"></script>
+    <script src="/js/app.js"></script>
   </head>
   <body>
 
-    <a href="#" onclick="twitterMarkers()">Twitter Markers</a>
-    <a href="#" onclick="heatMap()">Flu map</a>
-    <div id="displayData">
-
-    </div>
     <div id="map" style="height: 900px; width: 100%;"></div>
-        <script>
+        <!-- <script>
 
           getCenterLocation(initMap)
 
@@ -109,6 +110,6 @@
 
 
 
-      <script src="index.js"></script>
+      <script src="index.js"></script> -->
   </body>
 </html>
