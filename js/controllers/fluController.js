@@ -2,8 +2,8 @@ class FluController{
 
   constructor(fluData, $map){
     this.$map = $map
-    this.locations = getLocations(fluData)
-    this.points = getPoints(this.locations)
+    this.locations = this.getLocations(fluData)
+    this.points = this.getPoints(this.locations)
     this.render()
   }
 
