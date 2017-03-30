@@ -1,14 +1,11 @@
 $(()=>{
-  //get api
-
-// initiate map
-  //const map = initMap();
   let mapPromise = initMap()
   let fluPromise = FluTracker.all()
   Promise.all([mapPromise, fluPromise])
   .then(([map, fluData]) => {
+    let $tweets = $('#tweets')
     let $map = map
-    let fluController = new FluController(fluData, $map)
+    let fluController = new FluController(fluData, $map, $tweets)
   })
 
 })
