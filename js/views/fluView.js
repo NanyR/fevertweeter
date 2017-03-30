@@ -10,7 +10,6 @@ class FluView {
     var infowindow = new google.maps.InfoWindow({});
 
     locations.forEach(function(location) {
-        $('#tweets').append(this.tweetTemplate(location))
 
         let marker = new google.maps.Marker({
             position: new google.maps.LatLng(location[0], location[1]),
