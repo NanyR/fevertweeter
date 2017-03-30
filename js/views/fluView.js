@@ -23,5 +23,6 @@ class FluView {
         google.maps.event.addListener(marker,'mouseout', function() {
             infowindow.close();
         });
+      })
   }
 }
