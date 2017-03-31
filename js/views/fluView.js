@@ -1,5 +1,5 @@
 class FluView {
-  static renderMap($map, locations, points, $tweets) {
+  static renderMap($map, locations, points, $tweets, currentLocation) {
     $tweets.html(this.tweetTemplate(locations))
     let heatmap = new google.maps.visualization.HeatmapLayer({
       data: points,
@@ -7,6 +7,16 @@ class FluView {
       map: $map
     })
     var infowindow = new google.maps.InfoWindow({});
+    var image = {
+        url: 'http://www.iconninja.com/files/978/634/410/map-point-marker-pin-location-pointer-place-icon.png', // image is 512 x 512
+        scaledSize : new google.maps.Size(40, 48)
+    };
+    let current=new google.maps.Marker({
+      position: new google.maps.LatLng(currentLocation.lat, currentLocation.lng),
+      icon: image,
+      opacity: 1,
+      map: $map
+    })
 
     locations.forEach(function(location) {
             let marker = new google.maps.Marker({
@@ -32,9 +42,11 @@ class FluView {
     })
 
     let showtweets=sortTweets.map((tweet)=>{
+      let date = new Date(tweet[5] * 1000);
+      let stringdate=String(date).substring(0,15)
       let tweetWidget=`<div class='single-tweet'>
         <h3>${tweet[3]}</h3>
-        <p>${tweet[4]} miles away</p>
+        <p>${tweet[4]} miles away, on ${stringdate}</p>
         <p>${tweet[2]}</p></div>`;
         return tweetWidget
     })
