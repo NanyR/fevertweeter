@@ -16,7 +16,7 @@ $(()=>{
     let fluController = new FluController(fluData, $map, $tweets, currentLocation)
   })
 
-})
+})//end document get ready
 
 
   function getLocation(){

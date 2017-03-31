@@ -8,7 +8,7 @@ class FluView {
     })
     var infowindow = new google.maps.InfoWindow({});
     var image = {
-        url: 'http://www.iconninja.com/files/978/634/410/map-point-marker-pin-location-pointer-place-icon.png', // image is 512 x 512
+        url: 'http://www.iconninja.com/files/978/634/410/map-point-marker-pin-location-pointer-place-icon.png', //center location marker
         scaledSize : new google.maps.Size(40, 48)
     };
     let current=new google.maps.Marker({
@@ -25,6 +25,7 @@ class FluView {
             opacity: 0,
             map: $map
         });
+        //hover event listeners
         google.maps.event.addListener(marker,'mouseover', function() {
             infowindow.setContent(marker["title"])
             infowindow.open($map, this);
@@ -40,7 +41,6 @@ class FluView {
     let sortTweets= tweets.sort((a,b)=>{
       return a[4]-b[4]
     })
-
     let showtweets=sortTweets.map((tweet)=>{
       let date = new Date(tweet[5] * 1000);
       let stringdate=String(date).substring(0,15)
