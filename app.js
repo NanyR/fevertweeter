@@ -6,7 +6,7 @@ $(()=>{
       center: currentLocation,
       mapTypeId: 'satellite'
     })
-    return map
+      return map
   })
   let fluPromise = FluTracker.all()
   Promise.all([mapPromise, fluPromise, currentLocationPromise])

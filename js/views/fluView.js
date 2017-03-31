@@ -5,15 +5,12 @@ class FluView {
       data: points,
       radius: 35,
       map: $map
-
     })
     var infowindow = new google.maps.InfoWindow({});
 
     locations.forEach(function(location) {
-
-        let marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
             position: new google.maps.LatLng(location[0], location[1]),
-            //icon: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Ski_trail_rating_symbol_red_circle.png",
             title: location[2],
             opacity: 0,
             map: $map
@@ -35,10 +32,11 @@ class FluView {
     })
 
     let showtweets=sortTweets.map((tweet)=>{
-      return `<div id='single-tweet'>
+      let tweetWidget=`<div class='single-tweet'>
         <h3>${tweet[3]}</h3>
         <p>${tweet[4]} miles away</p>
-        <p>${tweet[2]}</p></div>`
+        <p>${tweet[2]}</p></div>`;
+        return tweetWidget
     })
     return showtweets.join('')
   }

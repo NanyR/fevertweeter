@@ -7,7 +7,6 @@ h1{
   margin-bottom: 1em;
   margin-top: 1em;
   color: #333;
-  /*color: #F62E2E;*/
 }
 
 #tweets{
@@ -16,4 +15,11 @@ h1{
   overflow-y: scroll;
   margin: 2em;
   width: 500px;
+}
+
+.single-tweet{
+  border: 2px solid #ccc;
+  border-radius: 7px;
+  margin-bottom: 1em;
+  padding:0 .5em;
 }
