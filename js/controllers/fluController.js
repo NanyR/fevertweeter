@@ -3,6 +3,7 @@ class FluController{
   constructor(fluData, $map, $tweets, currentLocation){
     this.$map = $map
     this.$tweets=$tweets
+    this.currentLocation = currentLocation
     this.locations = this.getLocations(fluData, currentLocation)
     this.points = this.getPoints(this.locations)
     this.render()
@@ -11,7 +12,7 @@ class FluController{
   getLocations(data, currentLocation) {
     let locations = data.map((d)=>{
       let distance= this.getDistance(d.longitude, d.latitude, currentLocation.lng, currentLocation.lat)
-      return [d.latitude, d.longitude, d.tweet_text, d.user_name, distance] //+distance
+      return [d.latitude, d.longitude, d.tweet_text, d.user_name, distance, d.tweet_date] //+distance
     })
     return locations
   }
@@ -25,8 +26,8 @@ class FluController{
             Math.sin(dLon/2) * Math.sin(dLon/2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c; // Distance in km
-    var distance = d * 0.62137
-    return Math.round(distance * 100) / 100 //return in miles
+    var distance = d * 0.62137 // convert to miles
+    return Math.round(distance * 100) / 100 //return rounded number
 }
 
   getPoints(coords){
@@ -37,6 +38,6 @@ class FluController{
   }
 
   render() {
-    FluView.renderMap(this.$map, this.locations, this.points, this.$tweets)
+    FluView.renderMap(this.$map, this.locations, this.points, this.$tweets, this.currentLocation)
   }
 }
