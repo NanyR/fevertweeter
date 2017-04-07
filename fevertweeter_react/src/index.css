@@ -35,3 +35,19 @@ h1{
   margin-bottom: 1em;
   padding:0 .5em;
 }
+
+.point-marker{
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.tweet-marker{
+  background-color: #fff;
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #000;
+  z-index: 1;
+}

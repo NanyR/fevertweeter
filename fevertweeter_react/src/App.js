@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
-import GoogleMapReact from 'google-map-react'
+// import GoogleMapReact from 'google-map-react'
 import Map from './map'
 
 const Tweets=(props)=>{
@@ -54,13 +54,11 @@ class App extends Component {
 // }
 
   getLocations(fluData, currentLocation){
-    let locations = fluData.map((d)=>{
+    let locations = fluData.data.map((d)=>{
       let distance= this.getDistance(d.longitude, d.latitude, currentLocation.lng, currentLocation.lat)
       return [d.latitude, d.longitude, d.tweet_text, d.user_name, distance, d.tweet_date] //+distance
     })
-    this.setState({
-      locations: locations,
-    })
+    return locations
   }
 
   getPoints(coords){
@@ -87,19 +85,32 @@ class App extends Component {
   componentDidMount(){
     Promise.all([this.fluData(), this.currentLocation()])
     .then(([fluData, currentLocation])=>{
+      let locations=this.getLocations(fluData, currentLocation)
+
       this.setState({
         loaded:true,
-        currentLocation:currentLocation
+        currentLocation:currentLocation,
+        locations:locations,
+        zoom:13
       })
-      this.getLocations(fluData, currentLocation)
     })
+  }
+
+  renderMap(){
+    return(
+      <Map
+        center={this.state.currentLocation}
+        locations={this.state.locations}
+        zoom={this.state.zoom}
+      />
+    )
   }
 
   render() {
     return (
       <div className="container">
           <h1>FEVER_TWEETER</h1>
-          {this.state.loaded ? <Map center={this.state.currentLocation} locations={this.state.locations}/> : "this is loading"}
+          {this.state.loaded ? this.renderMap() : "this is loading"}
 
           <Tweets />
       </div>
